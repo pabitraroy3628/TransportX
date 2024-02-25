@@ -1,0 +1,41 @@
+{% extends 'admin_navbar.html' %}
+
+{% block title %} All shipments {% endblock %}
+{% block profileactive %} active {% endblock profileactive %}
+
+{% block css %}
+
+{% endblock %}
+{% block body %}
+{% load static %}
+
+      <div class="row">
+        <div class="col-md">
+          <div class="card card-body grid">
+            <h5>All shipments ({{total_shipments}})</h5>
+          </div>
+          <div class="card card-body">
+            <table class="table">
+              <tr>
+                <th>Shipment Name</th>
+                <th>Receiver</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Delete</th>
+              </tr>
+  
+              {% for i in shipments %}
+                <tr>
+                  <td>{{i.shipment_name}}</td>
+                  <td>{{i.receiver}}</td>
+                  <td>{{i.category}}</td>
+                  <td>₹{{i.price}}</td>
+                  <td><a href="/all_shipments/delete_{{i.id}}/" class="btn btn-danger">Delete</a></td>
+                </tr>
+              {% endfor %}             
+            </table>
+          </div>
+        </div>       
+      </div>
+      {% endblock %}
+

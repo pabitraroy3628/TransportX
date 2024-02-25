@@ -1,0 +1,74 @@
+{% extends 'user_navbar.html' %}
+
+{% block title %} Shipments {% endblock %}
+
+{% block css %}
+<style>
+
+  .order-status-button {
+  border: none;
+  padding: 8px 16px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+[data-status="Ordered"] {
+  background-color: #2196f3; /* Blue */
+}
+
+[data-status="InTransit"] {
+  background-color: #ffc107; /* Amber */
+}
+
+[data-status="Delivered"] {
+  background-color: #4caf50; /* Green */
+}
+</style>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="row">
+  <div class="col-md">
+    <div class="card card-body">
+      <h5>Your orders ({{total_orders}})</h5>
+    </div>
+    <div class="card card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Tracking ID</th>
+            <th>Items</th>
+            <th>Billing Name</th>
+            <th>Address</th>
+            <th>Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        {% for order in orders %}
+          <tr>
+            <td id="trackingpr{{order.id}}">{{order.tracking_id}}</td>
+            <td id="itempr{{order.id}}">{{order.items_json}}</td>
+            <td id="namepr{{order.id}}">{{order.name}}</td>
+            <td><span id="addresspr{{order.id}}">{{order.address}}</span></td>
+            <td id="date{{order.id}}">{{order.date}}</td>
+  <!--          <td id="date{{order.status}}">{{order.status}}</td>-->
+            <td id="status{{order.status}}">
+            <button id="statusbtn{{order.id}}" class="order-status-button" data-status="{{order.status}}">
+              {{order.status}}
+            </button>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.slim.js"
+  integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
+{% endblock %}

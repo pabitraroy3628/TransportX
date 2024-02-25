@@ -1,0 +1,118 @@
+{% extends 'admin_navbar.html' %}
+
+{% block title %} Orders List {% endblock %}
+
+{% block css %}
+
+{% endblock %}
+{% block body %}
+<div class="row">
+    <div class="col-md">
+      <div class="card card-body">
+        <h5></h5>
+      </div>
+      <center><div class="container">
+
+        <h3>Delivery Status</h3>
+        <form action="/update_status/" method="POST">
+            {% csrf_token %}
+
+        <select id="status-dropdown" name="status">
+          <option value="Ordered" style="background-color: blue;">Ordered</option>
+          <option value="InTransit" style="background-color: orange;">InTransit</option>
+          <option value="Delivered" style="background-color: green;">Delivered</option>
+        </select>
+
+            <input type="hidden" name="customer_id" value="{{ customer.0.id }}">
+            <input type="hidden" name="tracking_id" value="{{ customer.0.tracking_id}}">
+            <button id="update-button">Update</button>
+        </form>
+      </div></center>
+      <div class="card card-body">
+        <table class="table">
+          <tr>
+            <th>Shipment Name</th>
+            <th>Receiver Name</th>
+            <th>Category</th>
+            <th>Quantity</th>
+            <th>Price</th>
+          </tr>
+          <tbody id="myTable"></tbody>
+        </table>
+      </div>
+    </div>       
+  </div>
+
+
+  {% endblock %}
+  {% block js %}
+<script>
+
+  const dropdown = document.getElementById('status-dropdown');
+const selectedStatus = "{{ customer.0.status }}";
+
+// Set initial color for selected option (if any)
+let color;
+if (selectedStatus === 'Ordered') {
+  color = 'blue';
+} else if (selectedStatus === 'InTransit') {
+  color = 'amber';
+} else if (selectedStatus === 'Delivered') {
+  color = 'green';
+}
+
+// Set initial selected option and color
+for (const option of dropdown.options) {
+  if (option.value === selectedStatus) {
+    option.selected = true;
+    option.style.backgroundColor = color;
+    break;
+  }
+}
+
+// Add event listener to update color on selection change
+dropdown.addEventListener('change', function() {
+  const selectedOption = this.options[this.selectedIndex];
+  const status = selectedOption.value;
+
+  if (status === 'Ordered') {
+    color = 'blue';
+  } else if (status === 'InTransit') {
+    color = 'amber';
+  } else if (status === 'Delivered') {
+    color = 'green';
+  }
+
+  selectedOption.style.backgroundColor = color;
+});
+
+  var myArray = []
+  const url = window.location.href;
+  $.ajax({
+    method: 'GET',
+    url: `${url}data`,
+    success: function(response){
+      myArray = response.data
+      myArray1 = JSON.parse(myArray);
+      console.log(myArray1)
+      buildTable(myArray1)
+    },
+    error: function(error){
+    console.log(error);
+    }
+  });
+  function buildTable(data){
+    var table = document.getElementById('myTable')
+    for(var items in data){
+      var row = `<tr>
+        <td>${data[items][1]}</td>
+        <td>${data[items][2]}</td>
+        <td>${data[items][3]}</td>
+        <td>${data[items][0]}</td>
+        <td>${data[items][4]}</td>
+        `
+        table.innerHTML += row
+    }
+  }
+</script>
+{% endblock %}

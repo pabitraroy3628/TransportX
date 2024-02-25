@@ -1,0 +1,21 @@
+{% extends 'user_navbar.html' %}
+
+{% block title %} Edit User Details {% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block body %}
+
+<h2>Edit Your Details</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Update</button>
+</form>
+
+{% endblock %}
+
+{% block js %}
+{% endblock %}

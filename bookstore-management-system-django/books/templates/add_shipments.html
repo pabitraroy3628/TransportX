@@ -1,0 +1,30 @@
+{% extends 'user_navbar.html' %}
+
+{% block title %} Shipments {% endblock %}
+
+{% block css %}
+{% endblock %}
+{% block body %}
+
+  <br>
+  <div class="container">
+  <form action="/add_shipments/" method="post">
+      {% csrf_token %} 
+    {{ form.as_p }}
+      <button type="submit" class="btn btn-light"  style="background-color: #008CBA; color: white; border: none;">Submit</button>
+  </form>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+  {% if submitted %}
+  alert('Shipment Added.');
+  localStorage.clear();
+  document.location = '/add_shipments/';
+  {% endif %}
+</script>
+{% endblock %}
+
+  
+
+
